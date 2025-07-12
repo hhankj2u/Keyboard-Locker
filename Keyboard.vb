@@ -128,6 +128,16 @@ Public Class Keyboard
     Dim ButtonSlashBlocked As Boolean
     Dim ButtonPeriodBlocked As Boolean
     Dim ButtonCommaBlocked As Boolean
+    ' Extra System Keys from image
+    Dim ButtonPrtScBlocked As Boolean
+    Dim ButtonScrollLockBlocked As Boolean
+    Dim ButtonPauseBlocked As Boolean
+    Dim ButtonInsertBlocked As Boolean
+    Dim ButtonHomeBlocked As Boolean
+    Dim ButtonPgUpBlocked As Boolean
+    Dim ButtonEndBlocked As Boolean
+    Dim ButtonPgDnBlocked As Boolean
+
     ' This begins the code necesary for the hotkeys
     Class Shortcut
         Inherits NativeWindow
@@ -290,7 +300,17 @@ Public Class Keyboard
         ButtonNumPadMultiplyBlocked = True
         ButtonNumPadNumLockBlocked = True
         ButtonNumPadSubtractBlocked = True
+        ' Add new keys to lock
+        ButtonPrtScBlocked = True
+        ButtonScrollLockBlocked = True
+        ButtonPauseBlocked = True
+        ButtonInsertBlocked = True
+        ButtonHomeBlocked = True
+        ButtonPgUpBlocked = True
+        ButtonEndBlocked = True
+        ButtonPgDnBlocked = True
 
+        ButtonDel.Enabled = False
 
         ButtonF1.Cursor = Cursors.No
         ButtonF2.Cursor = Cursors.No
@@ -681,7 +701,17 @@ Public Class Keyboard
         ButtonNumPadMultiplyBlocked = False
         ButtonNumPadNumLockBlocked = False
         ButtonNumPadSubtractBlocked = False
+        ' Add new keys to unlock
+        ButtonPrtScBlocked = False
+        ButtonScrollLockBlocked = False
+        ButtonPauseBlocked = False
+        ButtonInsertBlocked = False
+        ButtonHomeBlocked = False
+        ButtonPgUpBlocked = False
+        ButtonEndBlocked = False
+        ButtonPgDnBlocked = False
 
+        ButtonDel.Enabled = True
 
         ButtonF1.Cursor = Cursors.Default
         ButtonF2.Cursor = Cursors.Default
@@ -1518,6 +1548,47 @@ Public Class Keyboard
                         Return CType(1, IntPtr)
                     End If
                 End If
+                ' Add new keys to check
+                If ButtonPrtScBlocked Then
+                    If objKeyInfo.key = Keys.PrintScreen Then
+                        Return CType(1, IntPtr)
+                    End If
+                End If
+                If ButtonScrollLockBlocked Then
+                    If objKeyInfo.key = Keys.Scroll Then
+                        Return CType(1, IntPtr)
+                    End If
+                End If
+                If ButtonPauseBlocked Then
+                    If objKeyInfo.key = Keys.Pause Then
+                        Return CType(1, IntPtr)
+                    End If
+                End If
+                If ButtonInsertBlocked Then
+                    If objKeyInfo.key = Keys.Insert Then
+                        Return CType(1, IntPtr)
+                    End If
+                End If
+                If ButtonHomeBlocked Then
+                    If objKeyInfo.key = Keys.Home Then
+                        Return CType(1, IntPtr)
+                    End If
+                End If
+                If ButtonPgUpBlocked Then
+                    If objKeyInfo.key = Keys.PageUp Then
+                        Return CType(1, IntPtr)
+                    End If
+                End If
+                If ButtonEndBlocked Then
+                    If objKeyInfo.key = Keys.End Then
+                        Return CType(1, IntPtr)
+                    End If
+                End If
+                If ButtonPgDnBlocked Then
+                    If objKeyInfo.key = Keys.PageDown Then
+                        Return CType(1, IntPtr)
+                    End If
+                End If
                 Return CallNextHookEx(ptrHook, nCode, wp, lp)
             End If
         Catch ex As Exception
@@ -1555,7 +1626,7 @@ Public Class Keyboard
             End Try
         Next
     End Sub
-    'Subs that insitute the ButtonTestFor function 
+    'Subs that insitute the ButtonTestFor function
     'This allows all keys to change cursor and color without as many lines of code
     Private Sub ButtonF1_MouseDown(sender As Object, e As MouseEventArgs) Handles ButtonF1.MouseDown
         ButtonTestfor(F1Blocked, ButtonF1, e)
